@@ -2,7 +2,6 @@ from rest_framework import mixins, viewsets, filters
 from rest_framework import permissions
 from rest_framework.pagination import LimitOffsetPagination
 
-# from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 
