@@ -8,7 +8,7 @@ class IsAuthorOrReadOnly(permissions.BasePermission):
             return True
 
         return bool(
-            request.user.is_authenticated or not request.user.is_authenticated
+            request.user.is_authenticated
         )
 
     def has_object_permission(self, request, view, obj):

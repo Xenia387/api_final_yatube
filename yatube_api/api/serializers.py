@@ -2,12 +2,8 @@ from rest_framework import serializers
 from rest_framework.fields import CurrentUserDefault
 from rest_framework.relations import SlugRelatedField
 
-from django.contrib.auth import get_user_model
 
-from posts.models import Comment, Group, Follow, Post
-
-
-User = get_user_model()
+from posts.models import Comment, Group, Follow, Post, User
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -63,12 +59,14 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class FollowSerializer(serializers.ModelSerializer):
-    user = SlugRelatedField(slug_field='username',
-                            queryset=User.objects.all(),
-                            default=CurrentUserDefault()
-                            )
+    user = SlugRelatedField(
+        slug_field='username',
+        queryset=User.objects.all(),
+        default=CurrentUserDefault(),
+    )
     following = SlugRelatedField(
-        slug_field='username', queryset=User.objects.all(),
+        slug_field='username',
+        queryset=User.objects.all(),
     )
 
     class Meta:
@@ -82,9 +80,9 @@ class FollowSerializer(serializers.ModelSerializer):
             )
         ]
 
-    def validate(self, data):
-        if self.context['request'].user == data['following']:
+    def validate_following(self, value):
+        if self.context.get('request').user == value:
             raise serializers.ValidationError(
                 'Вы не можете подписаться на себя'
             )
-        return data
+        return value

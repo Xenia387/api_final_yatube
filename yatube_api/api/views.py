@@ -3,15 +3,12 @@ from rest_framework import permissions
 from rest_framework.pagination import LimitOffsetPagination
 
 from django.shortcuts import get_object_or_404
-from django.contrib.auth import get_user_model
 
-from posts.models import Comment, Group, Post
+from posts.models import Group, Post
 from api.serializers import (
     CommentSerializer, FollowSerializer, GroupSerializer, PostSerializer
 )
 from api.permissions import IsAuthorOrReadOnly
-
-User = get_user_model()
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -22,24 +19,19 @@ class CommentViewSet(viewsets.ModelViewSet):
     )
     pagination_class = LimitOffsetPagination
 
-    def get_post_id(self, post_id):
+    def post_id(self, post_id):
         post = get_object_or_404(Post, pk=self.kwargs.get(post_id))
         return post
 
     def get_queryset(self):
-        post = self.get_post_id('post_id')
-        new_queryset = Comment.objects.filter(post=post)
+        post = self.post_id('post_id')
+        # new_queryset = Comment.objects.filter(post=post)
+        new_queryset = post.comments.all()
         return new_queryset
 
     def perform_create(self, serializer):
-        post = self.get_post_id('post_id')
+        post = self.post_id('post_id')
         serializer.save(author=self.request.user, post=post)
-
-    def perform_update(self, serializer):
-        super(CommentViewSet, self).perform_update(serializer)
-
-    def perform_destroy(self, instance):
-        super(CommentViewSet, self).perform_destroy(instance)
 
 
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
@@ -58,12 +50,6 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
-
-    def perform_update(self, serializer):
-        super(PostViewSet, self).perform_update(serializer)
-
-    def perform_destroy(self, instance):
-        super(PostViewSet, self).perform_destroy(instance)
 
 
 class FollowViewSet(mixins.CreateModelMixin,
