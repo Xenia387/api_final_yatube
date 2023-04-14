@@ -19,18 +19,16 @@ class CommentViewSet(viewsets.ModelViewSet):
     )
     pagination_class = LimitOffsetPagination
 
-    def post_id(self, post_id):
+    def get_post(self, post_id):
         post = get_object_or_404(Post, pk=self.kwargs.get(post_id))
         return post
 
     def get_queryset(self):
-        post = self.post_id('post_id')
-        # new_queryset = Comment.objects.filter(post=post)
-        new_queryset = post.comments.all()
-        return new_queryset
+        post = self.get_post('post_id')
+        return post.comments.all()
 
     def perform_create(self, serializer):
-        post = self.post_id('post_id')
+        post = self.get_post('post_id')
         serializer.save(author=self.request.user, post=post)
 
 
