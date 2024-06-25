@@ -38,6 +38,10 @@ Yatube - это социальная сеть для публикации пос
 git clone git@github.com:Xenia387/api_final_yatube.git
 ```
 
+```
+cd api_final_yatube
+```
+
 - Установите и активируйте виртуальное окружение
 
 ```
