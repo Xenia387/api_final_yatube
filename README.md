@@ -1,6 +1,9 @@
 # api_final_yatube
 Yatube - это социальная сеть.
 
+## Возможности проекта
+Возможности проекта: авторизация с помощью модуля DRF – Authtoken, публикация и редактирование постов, добавление их в группы, публикация комментариев к постам, подписка на автора и отписка от него
+
 # Технологии
 - Python
 - HTML/CSS
@@ -48,5 +51,5 @@ pip install -r requirements.txt
 ```
 
 Автор: Анисимова Ксения
-email: anis.xenia@yandex.ru
-telegram: @Ksenia_An_mova
+- email: anis.xenia@yandex.ru
+- telegram: @Ksenia_An_mova
